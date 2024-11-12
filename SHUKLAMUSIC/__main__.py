@@ -48,7 +48,7 @@ async def init():
         exit()
     except:
         pass
-    await Sona.decorators()
+    await SHUKLA.decorators()
     LOGGER("SHUKLAMUSIC").info(
         "DROP YOUR GIRLFRIEND'S NUMBER AND SEXY PIC TO @SHIVANSHDEVS , @MASTIWITHFRIENDSXD FOR ANY ISSUES MADE BY SHASHANK SHUKLA"
     )
