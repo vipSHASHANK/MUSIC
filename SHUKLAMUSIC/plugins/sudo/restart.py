@@ -18,7 +18,7 @@ from SHUKLAMUSIC.utils.database import (
     remove_active_video_chat,
 )
 from SHUKLAMUSIC.utils.decorators.language import language
-from SHUKLAMUSIC.utils.pastebin import SonaBin
+from SHUKLAMUSIC.utils.pastebin import SHUKLABin
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
