@@ -3,7 +3,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from SHUKLAMUSIC import app
 from SHUKLAMUSIC.misc import SUDOERS, db
-from SHUKLAMUAIC.utils.database import (
+from SHUKLAMUSIC.utils.database import (
     get_authuser_names,
     get_cmode,
     get_lang,
