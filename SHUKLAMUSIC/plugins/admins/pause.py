@@ -5,7 +5,7 @@ from SHUKLAMUSIC import app
 from SHUKLAMUSIC.core.call import SHUKLA
 from SHUKLAMUSIC.utils.database import is_music_playing, music_off
 from SHUKLAMUSIC.utils.decorators import AdminRightsCheck
-from SHUJLAMUSIC.utils.inline import close_markup
+from SHUKLAMUSIC.utils.inline import close_markup
 from config import BANNED_USERS
 
 
