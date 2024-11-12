@@ -4,7 +4,7 @@ from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from SHUKLAMUSIC import YouTube, app
-from SHUKLAMUSIC.core.call import Sona
+from SHUKLAMUSIC.core.call import SHUKLA
 from SHUKLAMUSIC.misc import SUDOERS, db
 from SHUKLAMUSIC.utils.database import (
     get_active_chats,
@@ -176,7 +176,7 @@ async def del_back_playlist(client, CallbackQuery, _):
                         reply_markup=close_markup(_),
                     )
                     try:
-                        return await Sona.stop_stream(chat_id)
+                        return await SHUKLA.stop_stream(chat_id)
                     except:
                         return
             except:
@@ -190,7 +190,7 @@ async def del_back_playlist(client, CallbackQuery, _):
                         ),
                         reply_markup=close_markup(_),
                     )
-                    return await Sona.stop_stream(chat_id)
+                    return await SHUKLA.stop_stream(chat_id)
                 except:
                     return
         else:
