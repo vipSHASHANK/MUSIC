@@ -49,7 +49,7 @@ upvoters = {}
 async def unban_assistant(_, callback: CallbackQuery):
     chat_id = callback.message.chat.id
     userbot = await get_assistant(chat_id)
-    
+
     try:
         await app.unban_chat_member(chat_id, userbot.id)
         await callback.answer("My assistant id unbanned successfully\n\nNow you can play song🔉\n\nThank you", show_alert=True)
@@ -209,7 +209,7 @@ async def del_back_playlist(client, CallbackQuery, _):
                         ),
                         reply_markup=close_markup(_),
                     )
-                    return await BABY.stop_stream(chat_id)
+                    return await SHUKLA.stop_stream(chat_id)
                 except:
                     return
         else:
@@ -241,7 +241,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             except:
                 image = None
             try:
-                await BABY.skip_stream(chat_id, link, video=status, image=image)
+                await SHUKLA.skip_stream(chat_id, link, video=status, image=image)
             except:
                 return await CallbackQuery.message.reply_text(_["call_6"])
             button = stream_markup(_, chat_id)
@@ -294,7 +294,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             await mystic.delete()
         elif "index_" in queued:
             try:
-                await BABY.skip_stream(chat_id, videoid, video=status)
+                await SHUKLA.skip_stream(chat_id, videoid, video=status)
             except:
                 return await CallbackQuery.message.reply_text(_["call_6"])
             button = stream_markup(_, chat_id)
