@@ -1,5 +1,5 @@
 import asyncio
-
+from telegram import CallbackQuery
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
@@ -17,11 +17,17 @@ from SHUKLAMUSIC.utils.database import (
     music_on,
     set_loop,
 )
+from pyrogram.errors import (
+    ChatAdminRequired,
+    InviteRequestSent,
+    UserAlreadyParticipant,
+    UserNotParticipant,
+)
+from SHUKLAMUSIC.utils.database import get_assistant
 from SHUKLAMUSIC.utils.decorators.language import languageCB
 from SHUKLAMUSIC.utils.formatters import seconds_to_min
-from SHUKLAMUSIC.utils.inline import close_markup, stream_markup, stream_markup_timer
+from SHUKLAMUSIC.utils.inline import close_markup, stream_markup
 from SHUKLAMUSIC.utils.stream.autoclear import auto_clean
-from SHUKLAMUSIC.utils.thumbnails import get_thumb
 from config import (
     BANNED_USERS,
     SOUNCLOUD_IMG_URL,
@@ -36,6 +42,19 @@ from strings import get_string
 
 checker = {}
 upvoters = {}
+
+
+
+@app.on_callback_query(filters.regex("unban_assistant"))
+async def unban_assistant(_, callback: CallbackQuery):
+    chat_id = callback.message.chat.id
+    userbot = await get_assistant(chat_id)
+    
+    try:
+        await app.unban_chat_member(chat_id, userbot.id)
+        await callback.answer("My assistant id unbanned successfully\n\nNow you can play song🔉\n\nThank you", show_alert=True)
+    except Exception as e:
+        await callback.answer(f"Failed to unban my assistant because i don't have ban power\n\nPlease provide me ban power so that i can unban my assistant id", show_alert=True)
 
 
 @app.on_callback_query(filters.regex("ADMIN") & ~BANNED_USERS)
@@ -159,7 +178,7 @@ async def del_back_playlist(client, CallbackQuery, _):
     elif command == "Skip" or command == "Replay":
         check = db.get(chat_id)
         if command == "Skip":
-            txt = f"➻ sᴛʀᴇᴀᴍ sᴋɪᴩᴩᴇᴅ 🎄\n│ \n└ʙʏ : {mention} 🥀"
+            txt = f"{mention}\n Skiped"
             popped = None
             try:
                 popped = check.pop(0)
@@ -167,7 +186,7 @@ async def del_back_playlist(client, CallbackQuery, _):
                     await auto_clean(popped)
                 if not check:
                     await CallbackQuery.edit_message_text(
-                        f"➻ sᴛʀᴇᴀᴍ sᴋɪᴩᴩᴇᴅ 🎄\n│ \n└ʙʏ : {mention} 🥀"
+                        f"{mention}\n Skiped"
                     )
                     await CallbackQuery.message.reply_text(
                         text=_["admin_6"].format(
@@ -182,7 +201,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             except:
                 try:
                     await CallbackQuery.edit_message_text(
-                        f"➻ sᴛʀᴇᴀᴍ sᴋɪᴩᴩᴇᴅ 🎄\n│ \n└ʙʏ : {mention} 🥀"
+                        f"{mention}\n Skiped"
                     )
                     await CallbackQuery.message.reply_text(
                         text=_["admin_6"].format(
@@ -190,11 +209,11 @@ async def del_back_playlist(client, CallbackQuery, _):
                         ),
                         reply_markup=close_markup(_),
                     )
-                    return await SHUKLA.stop_stream(chat_id)
+                    return await BABY.stop_stream(chat_id)
                 except:
                     return
         else:
-            txt = f"➻ sᴛʀᴇᴀᴍ ʀᴇ-ᴘʟᴀʏᴇᴅ 🎄\n│ \n└ʙʏ : {mention} 🥀"
+            txt = f"{mention}\n playing"
         await CallbackQuery.answer()
         queued = check[0]["file"]
         title = (check[0]["title"]).title()
@@ -222,14 +241,12 @@ async def del_back_playlist(client, CallbackQuery, _):
             except:
                 image = None
             try:
-                await SHUKLA.skip_stream(chat_id, link, video=status, image=image)
+                await BABY.skip_stream(chat_id, link, video=status, image=image)
             except:
                 return await CallbackQuery.message.reply_text(_["call_6"])
             button = stream_markup(_, chat_id)
-            img = await get_thumb(videoid)
-            run = await CallbackQuery.message.reply_photo(
-                photo=img,
-                caption=_["stream_1"].format(
+            run = await CallbackQuery.message.reply_text(
+                text=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{videoid}",
                     title[:23],
                     duration,
@@ -262,10 +279,8 @@ async def del_back_playlist(client, CallbackQuery, _):
             except:
                 return await mystic.edit_text(_["call_6"])
             button = stream_markup(_, chat_id)
-            img = await get_thumb(videoid)
-            run = await CallbackQuery.message.reply_photo(
-                photo=img,
-                caption=_["stream_1"].format(
+            run = await CallbackQuery.message.reply_text(
+                text=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{videoid}",
                     title[:23],
                     duration,
@@ -279,7 +294,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             await mystic.delete()
         elif "index_" in queued:
             try:
-                await SHUKLA.skip_stream(chat_id, videoid, video=status)
+                await BABY.skip_stream(chat_id, videoid, video=status)
             except:
                 return await CallbackQuery.message.reply_text(_["call_6"])
             button = stream_markup(_, chat_id)
@@ -333,10 +348,8 @@ async def del_back_playlist(client, CallbackQuery, _):
                 db[chat_id][0]["markup"] = "tg"
             else:
                 button = stream_markup(_, chat_id)
-                img = await get_thumb(videoid)
-                run = await CallbackQuery.message.reply_photo(
-                    photo=img,
-                    caption=_["stream_1"].format(
+                run = await CallbackQuery.message.reply_text(
+                    text=_["stream_1"].format(
                         f"https://t.me/{app.username}?start=info_{videoid}",
                         title[:23],
                         duration,
