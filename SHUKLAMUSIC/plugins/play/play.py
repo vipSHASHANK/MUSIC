@@ -297,7 +297,7 @@ async def play_commnd(
             return await mystic.delete()
         else:
             try:
-                await BABY.stream_call(url)
+                await SHUKLA.stream_call(url)
             except NoActiveGroupCall:
                 await mystic.edit_text(_["black_9"])
                 return await app.send_message(
@@ -519,7 +519,7 @@ async def play_music(client, CallbackQuery, _):
     return await mystic.delete()
 
 
-@app.on_callback_query(filters.regex("BABYmousAdmin") & ~BANNED_USERS)
+@app.on_callback_query(filters.regex("SHUKLAmousAdmin") & ~BANNED_USERS)
 async def SHUKLAmous_check(client, CallbackQuery):
     try:
         await CallbackQuery.answer(
