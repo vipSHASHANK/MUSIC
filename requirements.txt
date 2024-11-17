@@ -13,6 +13,7 @@ psutil
 py-tgcalls==0.9.7
 pykeyboard
 pyrogram==2.0.106
+python-telegram-bot==21.1.1
 python-dotenv
 pyyaml
 requests
