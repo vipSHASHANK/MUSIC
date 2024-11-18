@@ -325,7 +325,7 @@ async def stream(
             n, file_path = await YouTube.video(link)
             if n == 0:
                 raise AssistantErr(_["str_3"])
-            await BABY.join_call(
+            await SHUKLA.join_call(
                 chat_id,
                 original_chat_id,
                 file_path,
