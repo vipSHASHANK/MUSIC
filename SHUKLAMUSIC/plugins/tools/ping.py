@@ -3,7 +3,7 @@ from datetime import datetime
 from pyrogram import filters
 from pyrogram.types import Message
 from config import *
-from ShuklaMUSIC import app
+from SHUKLAMUSIC import app
 from SHUKLAMUSIC.core.call import SHUKLA
 from SHUKLAMUSIC.utils import bot_sys_stats
 from SHUKLAMUSIC.utils.decorators.language import language
