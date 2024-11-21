@@ -22,11 +22,11 @@ flask_app = Flask(__name__)
 # Flask app ka ek basic route
 @flask_app.route('/')
 def home():
-    return "Flask app running on port 8000"
+    return "Flask app running on port 80"
 
 # Flask app ko alag thread mein run karne ka function
 def run_flask():
-    flask_app.run(host="0.0.0.0", port=8000)
+    flask_app.run(host="0.0.0.0", port=80)
 
 # Keep-alive function jo regular ping bhejta rahega
 def keep_alive():
